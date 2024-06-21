@@ -2,8 +2,8 @@ import { useBackend } from '../backend';
 import { Button, LabeledList, NumberInput, Section } from '../components';
 import { Window } from '../layouts';
 
-export const GulagTeleporterConsole = (props, context) => {
-  const { act, data } = useBackend(context);
+export const GulagTeleporterConsole = (props) => {
+  const { act, data } = useBackend();
   const {
     teleporter,
     teleporter_lock,
@@ -38,7 +38,8 @@ export const GulagTeleporterConsole = (props, context) => {
                 onClick={() => act('teleporter_lock')}
               />
             </>
-          }>
+          }
+        >
           <LabeledList>
             <LabeledList.Item
               label="Teleporter Unit"
@@ -50,7 +51,8 @@ export const GulagTeleporterConsole = (props, context) => {
                     onClick={() => act('scan_teleporter')}
                   />
                 )
-              }>
+              }
+            >
               {teleporter ? teleporter_location : 'Not Connected'}
             </LabeledList.Item>
             <LabeledList.Item
@@ -63,7 +65,8 @@ export const GulagTeleporterConsole = (props, context) => {
                     onClick={() => act('scan_beacon')}
                   />
                 )
-              }>
+              }
+            >
               {beacon ? beacon_location : 'Not Connected'}
             </LabeledList.Item>
           </LabeledList>
@@ -80,10 +83,11 @@ export const GulagTeleporterConsole = (props, context) => {
             <LabeledList.Item label="Point Goal">
               <NumberInput
                 value={goal}
+                step={1}
                 width="48px"
                 minValue={1}
                 maxValue={1000}
-                onChange={(e, value) => act('set_goal', { value })}
+                onChange={(value) => act('set_goal', { value })}
               />
             </LabeledList.Item>
             <LabeledList.Item label="Occupant">

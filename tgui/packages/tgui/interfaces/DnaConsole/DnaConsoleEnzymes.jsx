@@ -1,11 +1,22 @@
 import { useBackend } from '../../backend';
-import { Box, Button, Collapsible, Dimmer, Divider, Icon, LabeledList, NumberInput, Section, Stack } from '../../components';
-import { GeneticMakeupInfo } from './GeneticMakeupInfo';
+import {
+  Box,
+  Button,
+  Collapsible,
+  Dimmer,
+  Divider,
+  Icon,
+  LabeledList,
+  NumberInput,
+  Section,
+  Stack,
+} from '../../components';
 import { PULSE_DURATION_MAX, PULSE_STRENGTH_MAX } from './constants';
+import { GeneticMakeupInfo } from './GeneticMakeupInfo';
 
-const GeneticMakeupBufferInfo = (props, context) => {
+const GeneticMakeupBufferInfo = (props) => {
   const { index, makeup } = props;
-  const { act, data } = useBackend(context);
+  const { act, data } = useBackend();
   const { isViableSubject, hasDisk, diskReadOnly, isInjectorReady } = data;
   // Type of the action for applying makeup
   const ACTION_MAKEUP_APPLY = isViableSubject ? 'makeup_apply' : 'makeup_delay';
@@ -39,7 +50,8 @@ const GeneticMakeupBufferInfo = (props, context) => {
                 index,
                 type: 'ue',
               })
-            }>
+            }
+          >
             Transfer
             {!isViableSubject && ' (Delayed)'}
           </Button>
@@ -63,7 +75,8 @@ const GeneticMakeupBufferInfo = (props, context) => {
                 index,
                 type: 'ui',
               })
-            }>
+            }
+          >
             Transfer
             {!isViableSubject && ' (Delayed)'}
           </Button>
@@ -87,7 +100,8 @@ const GeneticMakeupBufferInfo = (props, context) => {
                 index,
                 type: 'uf',
               })
-            }>
+            }
+          >
             Transfer
             {!isViableSubject && ' (Delayed)'}
           </Button>
@@ -111,7 +125,8 @@ const GeneticMakeupBufferInfo = (props, context) => {
                 index,
                 type: 'mixed',
               })
-            }>
+            }
+          >
             Transfer
             {!isViableSubject && ' (Delayed)'}
           </Button>
@@ -133,8 +148,8 @@ const GeneticMakeupBufferInfo = (props, context) => {
   );
 };
 
-const GeneticMakeupBuffers = (props, context) => {
-  const { data, act } = useBackend(context);
+const GeneticMakeupBuffers = (props) => {
+  const { data, act } = useBackend();
   const {
     diskHasMakeup,
     geneticMakeupCooldown,
@@ -184,7 +199,8 @@ const GeneticMakeupBuffers = (props, context) => {
               }
             />
           </>
-        }>
+        }
+      >
         <GeneticMakeupBufferInfo index={i} makeup={makeup} />
       </Collapsible>
     );
@@ -205,8 +221,8 @@ const GeneticMakeupBuffers = (props, context) => {
   );
 };
 
-const PulseEmitterProbs = (props, context) => {
-  const { data } = useBackend(context);
+const PulseEmitterProbs = (props) => {
+  const { data } = useBackend();
   const { stdDevAcc, stdDevStr } = data;
   return (
     <Section title="Probabilities" minHeight="100%">
@@ -225,8 +241,8 @@ const PulseEmitterProbs = (props, context) => {
   );
 };
 
-const PulseBoard = (props, context) => {
-  const { act } = useBackend(context);
+const PulseBoard = (props) => {
+  const { act } = useBackend();
   const { subjectBlock = [], type, name } = props;
   // Build blocks of buttons of unique enzymes
   const blocks = [];
@@ -268,8 +284,8 @@ const PulseBoard = (props, context) => {
   );
 };
 
-const PulseSettings = (props, context) => {
-  const { data, act } = useBackend(context);
+const PulseSettings = (props) => {
+  const { data, act } = useBackend();
   const { pulseStrength, pulseDuration } = data;
   return (
     <Section title="Emitter Configuration" minHeight="100%">
@@ -278,11 +294,12 @@ const PulseSettings = (props, context) => {
           <NumberInput
             animated
             width="32px"
+            step={1}
             stepPixelSize={10}
             value={pulseStrength}
             minValue={1}
             maxValue={PULSE_STRENGTH_MAX}
-            onDrag={(e, value) =>
+            onDrag={(value) =>
               act('set_pulse_strength', {
                 val: value,
               })
@@ -293,11 +310,12 @@ const PulseSettings = (props, context) => {
           <NumberInput
             animated
             width="32px"
+            step={1}
             stepPixelSize={10}
             value={pulseDuration}
             minValue={1}
             maxValue={PULSE_DURATION_MAX}
-            onDrag={(e, value) =>
+            onDrag={(value) =>
               act('set_pulse_duration', {
                 val: value,
               })
@@ -309,8 +327,8 @@ const PulseSettings = (props, context) => {
   );
 };
 
-export const DnaConsoleEnzymes = (props, context) => {
-  const { data, act } = useBackend(context);
+export const DnaConsoleEnzymes = (props) => {
+  const { data, act } = useBackend();
   const { isScannerConnected } = data;
   const { subjectBlock, type, name } = props;
   if (!isScannerConnected) {

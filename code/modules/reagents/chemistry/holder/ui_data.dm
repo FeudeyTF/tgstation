@@ -9,38 +9,11 @@
 		ui.open()
 
 
-/datum/reagents/ui_status(mob/user)
+/datum/reagents/ui_status(mob/user, datum/ui_state/state)
 	return UI_INTERACTIVE //please advise
 
 /datum/reagents/ui_state(mob/user)
 	return GLOB.physical_state
-
-/datum/reagents/proc/generate_possible_reactions()
-	var/list/cached_reagents = reagent_list
-	if(!cached_reagents)
-		return null
-	var/list/cached_reactions = list()
-	var/list/possible_reactions = list()
-	if(!length(cached_reagents))
-		return null
-	cached_reactions = GLOB.chemical_reactions_list_reactant_index
-	for(var/_reagent in cached_reagents)
-		var/datum/reagent/reagent = _reagent
-		for(var/_reaction in cached_reactions[reagent.type]) // Was a big list but now it should be smaller since we filtered it with our reagent id
-			var/datum/chemical_reaction/reaction = _reaction
-			if(!_reaction)
-				continue
-			if(!reaction.required_reagents)//Don't bring in empty ones
-				continue
-			var/list/cached_required_reagents = reaction.required_reagents
-			var/total_matching_reagents = 0
-			for(var/req_reagent in cached_required_reagents)
-				if(!has_reagent(req_reagent, (cached_required_reagents[req_reagent]*0.01)))
-					continue
-				total_matching_reagents++
-			if(total_matching_reagents >= reagent_list.len)
-				possible_reactions += reaction
-	return possible_reactions
 
 ///Generates a (rough) rate vs temperature graph profile
 /datum/reagents/proc/generate_thermodynamic_profile(datum/chemical_reaction/reaction)
@@ -198,7 +171,7 @@
 			has_product = FALSE
 			var/list/names = splittext("[reaction.type]", "/")
 			var/product_name = names[names.len]
-			data["reagent_mode_recipe"] = list("name" = product_name, "id" = reaction.type, "hasProduct" = has_product, "reagentCol" = "#FFFFFF", "thermodynamics" = generate_thermodynamic_profile(reaction), "explosive" = generate_explosive_profile(reaction), "lowerpH" = reaction.optimal_ph_min, "upperpH" = reaction.optimal_ph_max, "thermics" = determine_reaction_thermics(reaction), "thermoUpper" = reaction.rate_up_lim, "minPurity" = reaction.purity_min, "inversePurity" = "N/A", "tempMin" = reaction.required_temp, "explodeTemp" = reaction.overheat_temp, "reqContainer" = container_name, "subReactLen" = 1, "subReactIndex" = 1)
+			data["reagent_mode_recipe"] = list("name" = product_name, "id" = reaction.type, "hasProduct" = has_product, "reagentCol" = COLOR_WHITE, "thermodynamics" = generate_thermodynamic_profile(reaction), "explosive" = generate_explosive_profile(reaction), "lowerpH" = reaction.optimal_ph_min, "upperpH" = reaction.optimal_ph_max, "thermics" = determine_reaction_thermics(reaction), "thermoUpper" = reaction.rate_up_lim, "minPurity" = reaction.purity_min, "inversePurity" = "N/A", "tempMin" = reaction.required_temp, "explodeTemp" = reaction.overheat_temp, "reqContainer" = container_name, "subReactLen" = 1, "subReactIndex" = 1)
 
 		//If we do have a product then we find it
 		else
@@ -288,7 +261,6 @@
 	data["bitflags"]["BURN"] = REACTION_TAG_BURN
 	data["bitflags"]["TOXIN"] = REACTION_TAG_TOXIN
 	data["bitflags"]["OXY"] = REACTION_TAG_OXY
-	data["bitflags"]["CLONE"] = REACTION_TAG_CLONE
 	data["bitflags"]["HEALING"] = REACTION_TAG_HEALING
 	data["bitflags"]["DAMAGING"] = REACTION_TAG_DAMAGING
 	data["bitflags"]["EXPLOSIVE"] = REACTION_TAG_EXPLOSIVE
@@ -383,9 +355,6 @@
 			return TRUE
 		if("toggle_tag_oxy")
 			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_OXY
-			return TRUE
-		if("toggle_tag_clone")
-			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_CLONE
 			return TRUE
 		if("toggle_tag_healing")
 			ui_tags_selected = ui_tags_selected ^ REACTION_TAG_HEALING

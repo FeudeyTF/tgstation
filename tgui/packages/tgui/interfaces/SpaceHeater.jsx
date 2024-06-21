@@ -1,9 +1,18 @@
+import { capitalize } from 'common/string';
+
 import { useBackend } from '../backend';
-import { Box, Button, LabeledList, NumberInput, ProgressBar, Section } from '../components';
+import {
+  Box,
+  Button,
+  LabeledList,
+  NumberInput,
+  ProgressBar,
+  Section,
+} from '../components';
 import { Window } from '../layouts';
 
-export const SpaceHeater = (props, context) => {
-  const { act, data } = useBackend(context);
+export const SpaceHeater = (props) => {
+  const { act, data } = useBackend();
   return (
     <Window width={400} height={305}>
       <Window.Content>
@@ -33,7 +42,8 @@ export const SpaceHeater = (props, context) => {
                 onClick={() => act('power')}
               />
             </>
-          }>
+          }
+        >
           <LabeledList>
             <LabeledList.Item label="Cell" color={!data.hasPowercell && 'bad'}>
               {(data.hasPowercell && (
@@ -43,7 +53,8 @@ export const SpaceHeater = (props, context) => {
                     good: [0.6, Infinity],
                     average: [0.3, 0.6],
                     bad: [-Infinity, 0.3],
-                  }}>
+                  }}
+                >
                   {data.powerLevel + '%'}
                 </ProgressBar>
               )) ||
@@ -62,7 +73,8 @@ export const SpaceHeater = (props, context) => {
                     : Math.abs(data.targetTemp - data.currentTemp) > 20
                       ? 'average'
                       : 'good'
-                }>
+                }
+              >
                 {data.currentTemp}°C
               </Box>
             </LabeledList.Item>
@@ -73,9 +85,10 @@ export const SpaceHeater = (props, context) => {
                   value={parseFloat(data.targetTemp)}
                   width="65px"
                   unit="°C"
+                  step={1}
                   minValue={data.minTemp}
                   maxValue={data.maxTemp}
-                  onChange={(e, value) =>
+                  onChange={(value) =>
                     act('target', {
                       target: value,
                     })
@@ -85,7 +98,7 @@ export const SpaceHeater = (props, context) => {
                 data.targetTemp + '°C'}
             </LabeledList.Item>
             <LabeledList.Item label="Mode">
-              {(!data.open && 'Auto') || (
+              {(!data.open && capitalize(data.mode)) || (
                 <>
                   <Button
                     icon="thermometer-half"

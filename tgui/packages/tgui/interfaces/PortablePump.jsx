@@ -3,8 +3,8 @@ import { Button, LabeledList, NumberInput, Section } from '../components';
 import { Window } from '../layouts';
 import { PortableBasicInfo } from './common/PortableAtmos';
 
-export const PortablePump = (props, context) => {
-  const { act, data } = useBackend(context);
+export const PortablePump = (props) => {
+  const { act, data } = useBackend();
   const {
     direction,
     connected,
@@ -32,7 +32,8 @@ export const PortablePump = (props, context) => {
               color={!direction && !holding ? 'caution' : null}
               onClick={() => act('direction')}
             />
-          }>
+          }
+        >
           <LabeledList>
             <LabeledList.Item label="Output">
               <NumberInput
@@ -42,7 +43,7 @@ export const PortablePump = (props, context) => {
                 minValue={minPressure}
                 maxValue={maxPressure}
                 step={10}
-                onChange={(e, value) =>
+                onChange={(value) =>
                   act('pressure', {
                     pressure: value,
                   })

@@ -19,11 +19,12 @@
 	inhand_icon_state = "buildpipe"
 	icon = 'icons/mob/augmentation/augments.dmi'
 	icon_static = 'icons/mob/augmentation/augments.dmi'
-	flags_1 = CONDUCT_1
+	obj_flags = CONDUCTS_ELECTRICITY
 	icon_state = "borg_l_arm"
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_ROBOTIC
+	bodyshape = BODYSHAPE_HUMANOID
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
@@ -40,7 +41,7 @@
 
 	biological_state = (BIO_ROBOTIC|BIO_JOINTED)
 
-	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT, CLONE = DEFAULT_CLONE_EXAMINE_TEXT)
+	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 	disabling_threshold_percentage = 1
 	bodypart_flags = BODYPART_UNHUSKABLE
 
@@ -52,11 +53,12 @@
 	icon_static = 'icons/mob/augmentation/augments.dmi'
 	icon = 'icons/mob/augmentation/augments.dmi'
 	limb_id = BODYPART_ID_ROBOTIC
-	flags_1 = CONDUCT_1
+	obj_flags = CONDUCTS_ELECTRICITY
 	icon_state = "borg_r_arm"
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_ROBOTIC
+	bodyshape = BODYSHAPE_HUMANOID
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
@@ -75,7 +77,7 @@
 
 	biological_state = (BIO_ROBOTIC|BIO_JOINTED)
 
-	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT, CLONE = DEFAULT_CLONE_EXAMINE_TEXT)
+	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 	bodypart_flags = BODYPART_UNHUSKABLE
 
 /obj/item/bodypart/leg/left/robot
@@ -86,11 +88,12 @@
 	icon_static = 'icons/mob/augmentation/augments.dmi'
 	icon = 'icons/mob/augmentation/augments.dmi'
 	limb_id = BODYPART_ID_ROBOTIC
-	flags_1 = CONDUCT_1
+	obj_flags = CONDUCTS_ELECTRICITY
 	icon_state = "borg_l_leg"
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_ROBOTIC
+	bodyshape = BODYSHAPE_HUMANOID
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
@@ -109,10 +112,10 @@
 
 	biological_state = (BIO_ROBOTIC|BIO_JOINTED)
 
-	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT, CLONE = DEFAULT_CLONE_EXAMINE_TEXT)
+	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 	bodypart_flags = BODYPART_UNHUSKABLE
 
-/obj/item/bodypart/leg/left/robot/emp_act(severity)
+/obj/item/bodypart/leg/left/robot/emp_effect(severity, protection)
 	. = ..()
 	if(!. || isnull(owner))
 		return
@@ -122,8 +125,9 @@
 		knockdown_time *= 2
 	owner.Knockdown(knockdown_time)
 	if(owner.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB)) // So the message isn't duplicated. If they were stunned beforehand by something else, then the message not showing makes more sense anyways.
-		return
+		return FALSE
 	to_chat(owner, span_danger("As your [plaintext_zone] unexpectedly malfunctions, it causes you to fall to the ground!"))
+	return
 
 /obj/item/bodypart/leg/right/robot
 	name = "cyborg right leg"
@@ -133,11 +137,12 @@
 	icon_static =  'icons/mob/augmentation/augments.dmi'
 	icon = 'icons/mob/augmentation/augments.dmi'
 	limb_id = BODYPART_ID_ROBOTIC
-	flags_1 = CONDUCT_1
+	obj_flags = CONDUCTS_ELECTRICITY
 	icon_state = "borg_r_leg"
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_ROBOTIC
+	bodyshape = BODYSHAPE_HUMANOID
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
@@ -156,10 +161,10 @@
 
 	biological_state = (BIO_ROBOTIC|BIO_JOINTED)
 
-	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT, CLONE = DEFAULT_CLONE_EXAMINE_TEXT)
+	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 	bodypart_flags = BODYPART_UNHUSKABLE
 
-/obj/item/bodypart/leg/right/robot/emp_act(severity)
+/obj/item/bodypart/leg/right/robot/emp_effect(severity, protection)
 	. = ..()
 	if(!. || isnull(owner))
 		return
@@ -169,8 +174,9 @@
 		knockdown_time *= 2
 	owner.Knockdown(knockdown_time)
 	if(owner.incapacitated(IGNORE_RESTRAINTS|IGNORE_GRAB)) // So the message isn't duplicated. If they were stunned beforehand by something else, then the message not showing makes more sense anyways.
-		return
+		return FALSE
 	to_chat(owner, span_danger("As your [plaintext_zone] unexpectedly malfunctions, it causes you to fall to the ground!"))
+	return
 
 /obj/item/bodypart/chest/robot
 	name = "cyborg torso"
@@ -179,11 +185,12 @@
 	icon_static =  'icons/mob/augmentation/augments.dmi'
 	icon = 'icons/mob/augmentation/augments.dmi'
 	limb_id = BODYPART_ID_ROBOTIC
-	flags_1 = CONDUCT_1
+	obj_flags = CONDUCTS_ELECTRICITY
 	icon_state = "borg_chest"
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_ROBOTIC
+	bodyshape = BODYSHAPE_HUMANOID
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
@@ -200,7 +207,7 @@
 
 	biological_state = (BIO_ROBOTIC)
 
-	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT, CLONE = DEFAULT_CLONE_EXAMINE_TEXT)
+	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 	bodypart_flags = BODYPART_UNHUSKABLE
 
 	robotic_emp_paralyze_damage_percent_threshold = 0.6
@@ -210,7 +217,7 @@
 	var/wired = FALSE
 	var/obj/item/stock_parts/cell/cell = null
 
-/obj/item/bodypart/chest/robot/emp_act(severity)
+/obj/item/bodypart/chest/robot/emp_effect(severity, protection)
 	. = ..()
 	if(!. || isnull(owner))
 		return
@@ -231,6 +238,7 @@
 		to_chat(owner, span_danger("Your [plaintext_zone]'s logic boards temporarily become unresponsive!"))
 		owner.Stun(stun_time)
 	owner.Shake(pixelshiftx = shift_x, pixelshifty = shift_y, duration = shake_duration)
+	return
 
 /obj/item/bodypart/chest/robot/get_cell()
 	return cell
@@ -353,11 +361,12 @@
 	icon_static = 'icons/mob/augmentation/augments.dmi'
 	icon = 'icons/mob/augmentation/augments.dmi'
 	limb_id = BODYPART_ID_ROBOTIC
-	flags_1 = CONDUCT_1
+	obj_flags = CONDUCTS_ELECTRICITY
 	icon_state = "borg_head"
 	is_dimorphic = FALSE
 	should_draw_greyscale = FALSE
-	bodytype = BODYTYPE_HUMANOID | BODYTYPE_ROBOTIC
+	bodytype = BODYTYPE_ROBOTIC
+	bodyshape = BODYSHAPE_HUMANOID
 	change_exempt_flags = BP_BLOCK_CHANGE_SPECIES
 	dmg_overlay_type = "robotic"
 
@@ -374,7 +383,7 @@
 
 	biological_state = (BIO_ROBOTIC)
 
-	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT, CLONE = DEFAULT_CLONE_EXAMINE_TEXT)
+	damage_examines = list(BRUTE = ROBOTIC_BRUTE_EXAMINE_TEXT, BURN = ROBOTIC_BURN_EXAMINE_TEXT)
 
 	head_flags = HEAD_EYESPRITES
 	bodypart_flags = BODYPART_UNHUSKABLE
@@ -384,7 +393,7 @@
 
 #define EMP_GLITCH "EMP_GLITCH"
 
-/obj/item/bodypart/head/robot/emp_act(severity)
+/obj/item/bodypart/head/robot/emp_effect(severity, protection)
 	. = ..()
 	if(!. || isnull(owner))
 		return
@@ -398,6 +407,7 @@
 	owner.add_client_colour(/datum/client_colour/malfunction)
 
 	addtimer(CALLBACK(owner, TYPE_PROC_REF(/mob/living/carbon/human, remove_client_colour), /datum/client_colour/malfunction), glitch_duration)
+	return
 
 #undef EMP_GLITCH
 

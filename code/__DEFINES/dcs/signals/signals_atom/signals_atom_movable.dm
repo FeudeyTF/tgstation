@@ -23,9 +23,11 @@
 #define COMSIG_MOVABLE_DRIFT_BLOCK_INPUT "movable_drift_block_input"
 	#define DRIFT_ALLOW_INPUT (1<<0)
 ///from base of atom/movable/throw_impact(): (/atom/hit_atom, /datum/thrownthing/throwingdatum)
-#define COMSIG_MOVABLE_IMPACT "movable_impact"
+#define COMSIG_MOVABLE_PRE_IMPACT "movable_pre_impact"
 	#define COMPONENT_MOVABLE_IMPACT_FLIP_HITPUSH (1<<0) //if true, flip if the impact will push what it hits
 	#define COMPONENT_MOVABLE_IMPACT_NEVERMIND (1<<1) //return true if you destroyed whatever it was you're impacting and there won't be anything for hitby() to run on
+///from base of atom/movable/throw_impact() after confirming a hit: (/atom/hit_atom, /datum/thrownthing/throwingdatum)
+#define COMSIG_MOVABLE_IMPACT "movable_impact"
 ///from base of mob/living/hitby(): (mob/living/target, hit_zone, blocked, datum/thrownthing/throwingdatum)
 #define COMSIG_MOVABLE_IMPACT_ZONE "item_impact_zone"
 ///from /atom/movable/proc/buckle_mob(): (mob/living/M, force, check_loc, buckle_mob_flags)
@@ -35,6 +37,10 @@
 #define COMSIG_MOVABLE_BUCKLE "buckle"
 ///from base of atom/movable/unbuckle_mob(): (mob, force)
 #define COMSIG_MOVABLE_UNBUCKLE "unbuckle"
+///from /atom/movable/proc/buckle_mob(): (buckled_movable)
+#define COMSIG_MOB_BUCKLED "mob_buckle"
+///from /atom/movable/proc/unbuckle_mob(): (buckled_movable)
+#define COMSIG_MOB_UNBUCKLED "mob_unbuckle"
 ///from /obj/vehicle/proc/driver_move, caught by the riding component to check and execute the driver trying to drive the vehicle
 #define COMSIG_RIDDEN_DRIVER_MOVE "driver_move"
 	#define COMPONENT_DRIVER_BLOCK_MOVE (1<<0)
@@ -110,3 +116,10 @@
 #define COMSIG_MOVABLE_EDIT_UNIQUE_IMMERSE_OVERLAY "movable_edit_unique_submerge_overlay"
 /// From base of area/Exited(): (area/left, direction)
 #define COMSIG_MOVABLE_EXITED_AREA "movable_exited_area"
+
+/// Sent to movables when they are being stolen by a spy: (mob/living/spy, datum/spy_bounty/bounty)
+#define COMSIG_MOVABLE_SPY_STEALING "movable_spy_stealing"
+/// Called when something is pushed by a living mob bumping it: (mob/living/pusher, push force)
+#define COMSIG_MOVABLE_BUMP_PUSHED "movable_bump_pushed"
+	/// Stop it from moving
+	#define COMPONENT_NO_PUSH (1<<0)

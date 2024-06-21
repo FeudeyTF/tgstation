@@ -1,40 +1,39 @@
-import { multiline } from 'common/string';
 import { useBackend } from '../backend';
 import { Button, Input, LabeledList, Section } from '../components';
 import { Window } from '../layouts';
 
-const TOOLTIP_NAME = multiline`
+const TOOLTIP_NAME = `
   Enter a new name for this unit. Set to blank to reset to default,
   which means unit will be able to choose it's own name.
 `;
 
-const TOOLTIP_LOCOMOTION = multiline`
+const TOOLTIP_LOCOMOTION = `
   If restricted, unit will be
   under lockdown until released.
 `;
 
-const TOOLTIP_PANEL = multiline`
+const TOOLTIP_PANEL = `
   If unlocked, unit's cover panel will be
   accessible even without proper authorization.
 `;
 
-const TOOLTIP_AISYNC = multiline`
+const TOOLTIP_AISYNC = `
   If closed, this unit will
   not be paired with any AI.
 `;
 
-const TOOLTIP_AI = multiline`
+const TOOLTIP_AI = `
   Controls who will be the
   master AI of this unit.
 `;
 
-const TOOLTIP_LAWSYNC = multiline`
+const TOOLTIP_LAWSYNC = `
   If closed, this unit will not synchronize
   it's laws with it's master AI.
 `;
 
-export const CyborgBootDebug = (props, context) => {
-  const { act, data } = useBackend(context);
+export const CyborgBootDebug = (props) => {
+  const { act, data } = useBackend();
   const { designation, master, lawsync, aisync, locomotion, panel } = data;
   return (
     <Window width={master?.length > 26 ? 537 : 440} height={289}>
@@ -49,7 +48,8 @@ export const CyborgBootDebug = (props, context) => {
                   tooltip={TOOLTIP_NAME}
                   tooltipPosition="left"
                 />
-              }>
+              }
+            >
               <Input
                 fluid
                 value={designation || 'Default Cyborg'}
@@ -68,7 +68,8 @@ export const CyborgBootDebug = (props, context) => {
                   tooltip={TOOLTIP_LOCOMOTION}
                   tooltipPosition="left"
                 />
-              }>
+              }
+            >
               <Button
                 icon={locomotion ? 'unlock' : 'lock'}
                 content={locomotion ? 'Free' : 'Restricted'}
@@ -84,7 +85,8 @@ export const CyborgBootDebug = (props, context) => {
                   tooltip={TOOLTIP_PANEL}
                   tooltipPosition="left"
                 />
-              }>
+              }
+            >
               <Button
                 icon={panel ? 'lock' : 'unlock'}
                 content={panel ? 'Locked' : 'Unlocked'}
@@ -103,7 +105,8 @@ export const CyborgBootDebug = (props, context) => {
                   tooltip={TOOLTIP_AISYNC}
                   tooltipPosition="left"
                 />
-              }>
+              }
+            >
               <Button
                 icon={aisync ? 'unlock' : 'lock'}
                 content={aisync ? 'Open' : 'Closed'}
@@ -118,7 +121,8 @@ export const CyborgBootDebug = (props, context) => {
                   tooltip={TOOLTIP_AI}
                   tooltipPosition="left"
                 />
-              }>
+              }
+            >
               <Button
                 icon={!aisync ? 'times' : master ? 'edit' : 'sync'}
                 content={!aisync ? 'None' : master || 'Automatic'}
@@ -135,7 +139,8 @@ export const CyborgBootDebug = (props, context) => {
                   tooltip={TOOLTIP_LAWSYNC}
                   tooltipPosition="top-start"
                 />
-              }>
+              }
+            >
               <Button
                 icon={!aisync ? 'lock' : lawsync ? 'unlock' : 'lock'}
                 content={!aisync ? 'Closed' : lawsync ? 'Open' : 'Closed'}

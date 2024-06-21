@@ -180,14 +180,7 @@
 			file_data["longestsurvival"] = longest_survival
 		file_data["longestdeathstreak"] = longest_deathstreak
 
-	var/formatted_data
-#if DM_VERSION >= 515
-	formatted_data = json_encode(file_data, JSON_PRETTY_PRINT)
-#else
-	formatted_data = json_encode(file_data)
-#endif
-
-	rustg_file_write(formatted_data, file_path)
+	rustg_file_write(json_encode(file_data, JSON_PRETTY_PRINT), file_path)
 	memory_saved = TRUE
 	return TRUE
 
@@ -204,6 +197,7 @@
 	butcher_results = list(/obj/item/ectoplasm = 1)
 	ai_controller = /datum/ai_controller/basic_controller/parrot/ghost
 	speech_probability_rate = 1
+	resistance_flags = parent_type::resistance_flags | SHUTTLE_CRUSH_PROOF
 
 /mob/living/basic/parrot/poly/ghost/Initialize(mapload)
 	// block anything and everything that could possibly happen with writing memory for ghosts

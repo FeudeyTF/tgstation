@@ -1,12 +1,13 @@
 import { map } from 'common/collections';
 import { toFixed } from 'common/math';
+
 import { useBackend } from '../backend';
 import { Box, Button, LabeledList, NumberInput, Section } from '../components';
 import { RADIO_CHANNELS } from '../constants';
 import { Window } from '../layouts';
 
-export const Radio = (props, context) => {
-  const { act, data } = useBackend(context);
+export const Radio = (props) => {
+  const { act, data } = useBackend();
   const {
     freqlock,
     frequency,
@@ -20,12 +21,12 @@ export const Radio = (props, context) => {
     subspaceSwitchable,
   } = data;
   const tunedChannel = RADIO_CHANNELS.find(
-    (channel) => channel.freq === frequency
+    (channel) => channel.freq === frequency,
   );
-  const channels = map((value, key) => ({
+  const channels = map(data.channels, (value, key) => ({
     name: key,
     status: !!value,
-  }))(data.channels);
+  }));
   // Calculate window height
   let height = 106;
   if (subspace) {
@@ -55,7 +56,7 @@ export const Radio = (props, context) => {
                   maxValue={maxFrequency / 10}
                   value={frequency / 10}
                   format={(value) => toFixed(value, 1)}
-                  onDrag={(e, value) =>
+                  onDrag={(value) =>
                     act('frequency', {
                       adjust: value - frequency / 10,
                     })

@@ -1,6 +1,5 @@
 import { useBackend } from '../backend';
 import { Button, Dimmer, Section, Stack } from '../components';
-import { multiline } from 'common/string';
 import { Window } from '../layouts';
 
 const STORY_VALUE_KEY = -1;
@@ -11,8 +10,8 @@ const STORY_VALUE_OKAY = 3;
 const STORY_VALUE_AMAZING = 4;
 const STORY_VALUE_LEGENDARY = 5;
 
-const MemoryQuality = (props, context) => {
-  const { act } = useBackend(context);
+const MemoryQuality = (props) => {
+  const { act } = useBackend();
   const { quality } = props;
 
   if (quality === STORY_VALUE_KEY) {
@@ -21,7 +20,7 @@ const MemoryQuality = (props, context) => {
         icon="key"
         color="transparent"
         tooltipPosition="right"
-        tooltip={multiline`
+        tooltip={`
           This is a key memory. It contains important information
           you may want to double-check in the future.
         `}
@@ -34,7 +33,7 @@ const MemoryQuality = (props, context) => {
         icon="poop"
         color="transparent"
         tooltipPosition="right"
-        tooltip={multiline`
+        tooltip={`
           This memory is not interesting at all! It does not make for
           good art and is unlikely to pass to future generations.
         `}
@@ -47,7 +46,7 @@ const MemoryQuality = (props, context) => {
         icon="star"
         color="transparent"
         tooltipPosition="right"
-        tooltip={multiline`
+        tooltip={`
           This memory pretty bland. It would make for some pretty
           mediocre art and is not likely to pass to future generations.
   `}
@@ -59,11 +58,11 @@ const MemoryQuality = (props, context) => {
       <Button
         icon="star"
         style={{
-          'background':
+          background:
             'linear-gradient(to right, #964B30, #D68B60, #B66B30, #D68B60, #964B30);',
         }}
         tooltipPosition="right"
-        tooltip={multiline`
+        tooltip={`
           This memory is not super interesting. It could turn into
           an okay story but don't bet on it.
     `}
@@ -75,11 +74,11 @@ const MemoryQuality = (props, context) => {
       <Button
         icon="star"
         style={{
-          'background':
+          background:
             'linear-gradient(to right, #636363, #a3a3a3, #6e6e6e, #a3a3a3, #636363);',
         }}
         tooltipPosition="right"
-        tooltip={multiline`
+        tooltip={`
           This memory is pretty okay! Some good stories could be told
           from this and it might even come back in future generations.
       `}
@@ -91,11 +90,11 @@ const MemoryQuality = (props, context) => {
       <Button
         icon="star"
         style={{
-          'background':
+          background:
             'linear-gradient(to right, #AA771C, #BCB68A, #B38728, #BCB68A, #AA771C);',
         }}
         tooltipPosition="right"
-        tooltip={multiline`
+        tooltip={`
           This memory is great! You could tell a great story from it,
           and it would have a good chanced pass to future generations!
       `}
@@ -107,11 +106,11 @@ const MemoryQuality = (props, context) => {
       <Button
         icon="crown"
         style={{
-          'background':
+          background:
             'linear-gradient(to right, #56A5B3, #75D4E2, #56A5B3, #75D4E2, #56A5B3)',
         }}
         tooltipPosition="right"
-        tooltip={multiline`
+        tooltip={`
           This memory is the stuff of legends! It would make for
           legendary art and is likely to pass to future generations.
         `}
@@ -123,7 +122,7 @@ const MemoryQuality = (props, context) => {
     <Button
       icon="question"
       tooltipPosition="right"
-      tooltip={multiline`
+      tooltip={`
         This memory has no valid quality assigned. We have no idea how good
         or bad it may be. This is a bug, and should be reported!
       `}
@@ -131,8 +130,8 @@ const MemoryQuality = (props, context) => {
   );
 };
 
-export const MemoryPanel = (props, context) => {
-  const { act, data } = useBackend(context);
+export const MemoryPanel = (props) => {
+  const { act, data } = useBackend();
   const memories = data.memories || [];
   return (
     <Window title="Memory Panel" width={400} height={500}>
@@ -143,7 +142,7 @@ export const MemoryPanel = (props, context) => {
           buttons={
             <Button
               color="transparent"
-              tooltip={multiline`
+              tooltip={`
                 These are your memories. You gain them from doing notable things
                 and you can use them in art!
               `}

@@ -1,6 +1,6 @@
 #define VV_NUM "Number"
 #define VV_TEXT "Text"
-#define VV_MESSAGE "Mutiline Text"
+#define VV_MESSAGE "Multiline Text"
 #define VV_COLOR "Color"
 #define VV_COLOR_MATRIX "Color Matrix"
 #define VV_ICON "Icon"
@@ -114,6 +114,9 @@
 // /obj/item
 #define VV_HK_ADD_FANTASY_AFFIX "add_fantasy_affix"
 
+// /obj/narsie
+#define VV_HK_BEGIN_NARSIE_ROUNDEND "begin_narsie_roundend"
+
 // /mob
 #define VV_HK_GIB "gib"
 #define VV_HK_GIVE_MOB_ACTION "give_mob_action"
@@ -133,6 +136,7 @@
 
 // /mob/living
 #define VV_HK_GIVE_SPEECH_IMPEDIMENT "impede_speech"
+#define VV_HK_ADMIN_RENAME "admin_rename"
 #define VV_HK_ADD_MOOD "addmood"
 #define VV_HK_REMOVE_MOOD "removemood"
 #define VV_HK_GIVE_HALLUCINATION "give_hallucination"
@@ -153,6 +157,7 @@
 #define VV_HK_SET_SPECIES "setspecies"
 #define VV_HK_PURRBATION "purrbation"
 #define VV_HK_APPLY_DNA_INFUSION "apply_dna_infusion"
+#define VV_HK_TURN_INTO_MMI "turn_into_mmi"
 
 // misc
 #define VV_HK_SPACEVINE_PURGE "spacevine_purge"

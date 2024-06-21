@@ -1,11 +1,24 @@
-import { Box, Stack, Section, Button, Input, Dropdown, Icon } from '../../components';
-import { Component } from 'inferno';
 import { shallowDiffers } from 'common/react';
-import { VARIABLE_ASSOC_LIST, VARIABLE_LIST, VARIABLE_NOT_A_LIST } from './constants';
+import { Component } from 'react';
+
+import {
+  Box,
+  Button,
+  Dropdown,
+  Icon,
+  Input,
+  Section,
+  Stack,
+} from '../../components';
+import {
+  VARIABLE_ASSOC_LIST,
+  VARIABLE_LIST,
+  VARIABLE_NOT_A_LIST,
+} from './constants';
 
 export class VariableMenu extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       variable_name: '',
       variable_type: 'any',
@@ -52,7 +65,8 @@ export class VariableMenu extends Component {
         }
         onMouseUp={(event) => {
           event.preventDefault();
-        }}>
+        }}
+      >
         <Stack height="100%">
           <Stack.Item grow={1} mr={2}>
             <Section fill scrollable>
@@ -63,7 +77,8 @@ export class VariableMenu extends Component {
                       backgroundColor="transparent"
                       px="1px"
                       py="1px"
-                      height="100%">
+                      height="100%"
+                    >
                       <Stack>
                         <Stack.Item basis="50%" grow>
                           <Box width="100%" overflow="hidden">
@@ -81,7 +96,7 @@ export class VariableMenu extends Component {
                             onMouseDown={(e) => handleMouseDownSetter(e, val)}
                             color={val.color}
                             disabled={!!val.is_list}
-                            tooltip={multiline`
+                            tooltip={`
                             Drag me onto the circuit's grid
                             to make a setter for this variable`}
                             icon="pen"
@@ -90,7 +105,7 @@ export class VariableMenu extends Component {
                         <Stack.Item>
                           <Button
                             fluid
-                            tooltip={multiline`
+                            tooltip={`
                             Drag me onto the circuit's grid
                             to make a getter for this variable`}
                             color={val.color}
@@ -129,7 +144,7 @@ export class VariableMenu extends Component {
                 <Stack.Item>
                   <Dropdown
                     options={types}
-                    displayText={variable_type}
+                    selected={variable_type}
                     className="IntegratedCircuit__BlueBorder"
                     color="black"
                     width="100%"
@@ -152,10 +167,11 @@ export class VariableMenu extends Component {
                             variable_name,
                             variable_type,
                             VARIABLE_NOT_A_LIST,
-                            e
+                            e,
                           )
                         }
-                        fluid>
+                        fluid
+                      >
                         <IconButton icon="plus" />
                       </Button>
                     </Stack.Item>
@@ -168,10 +184,11 @@ export class VariableMenu extends Component {
                             variable_name,
                             variable_type,
                             VARIABLE_LIST,
-                            e
+                            e,
                           )
                         }
-                        fluid>
+                        fluid
+                      >
                         <IconButton icon="list-ol" />
                       </Button>
                     </Stack.Item>
@@ -184,10 +201,11 @@ export class VariableMenu extends Component {
                             variable_name,
                             variable_type,
                             VARIABLE_ASSOC_LIST,
-                            e
+                            e,
                           )
                         }
-                        fluid>
+                        fluid
+                      >
                         <IconButton icon="table-list" />
                       </Button>
                     </Stack.Item>
@@ -202,7 +220,7 @@ export class VariableMenu extends Component {
   }
 }
 
-const IconButton = (props, context) => {
+const IconButton = (props) => {
   return (
     <Stack fill align="center">
       <Stack.Item grow basis="content">

@@ -1,9 +1,16 @@
 import { useBackend } from '../backend';
-import { Box, Button, LabeledList, NoticeBox, ProgressBar, Section } from '../components';
+import {
+  Box,
+  Button,
+  LabeledList,
+  NoticeBox,
+  ProgressBar,
+  Section,
+} from '../components';
 import { Window } from '../layouts';
 import { InterfaceLockNoticeBox } from './common/InterfaceLockNoticeBox';
 
-export const Apc = (props, context) => {
+export const Apc = (props) => {
   return (
     <Window width={450} height={445}>
       <Window.Content scrollable>
@@ -22,7 +29,7 @@ const powerStatusMap = {
   1: {
     color: 'average',
     externalPowerText: 'Low External Power',
-    chargingText: 'Charging',
+    chargingText: 'Charging: ',
   },
   0: {
     color: 'bad',
@@ -54,8 +61,8 @@ const malfMap = {
   },
 };
 
-const ApcContent = (props, context) => {
-  const { act, data } = useBackend(context);
+const ApcContent = (props) => {
+  const { act, data } = useBackend();
   const locked = data.locked && !data.siliconUser;
   const externalPowerStatus =
     powerStatusMap[data.externalPower] || powerStatusMap[0];
@@ -105,7 +112,8 @@ const ApcContent = (props, context) => {
                 disabled={locked}
                 onClick={() => act('breaker')}
               />
-            }>
+            }
+          >
             [ {externalPowerStatus.externalPowerText} ]
           </LabeledList.Item>
           <LabeledList.Item label="Power Cell">
@@ -121,8 +129,12 @@ const ApcContent = (props, context) => {
                 disabled={locked}
                 onClick={() => act('charge')}
               />
-            }>
-            [ {chargingStatus.chargingText} ]
+            }
+          >
+            [{' '}
+            {chargingStatus.chargingText +
+              (data.chargingStatus === 1 ? data.chargingPowerDisplay : '')}{' '}
+            ]
           </LabeledList.Item>
         </LabeledList>
       </Section>
@@ -139,7 +151,8 @@ const ApcContent = (props, context) => {
                     <Box
                       inline
                       mx={2}
-                      color={channel.status >= 2 ? 'good' : 'bad'}>
+                      color={channel.status >= 2 ? 'good' : 'bad'}
+                    >
                       {channel.status >= 2 ? 'On' : 'Off'}
                     </Box>
                     <Button
@@ -167,7 +180,8 @@ const ApcContent = (props, context) => {
                       onClick={() => act('channel', topicParams.off)}
                     />
                   </>
-                }>
+                }
+              >
                 {channel.powerLoad}
               </LabeledList.Item>
             );
@@ -197,7 +211,8 @@ const ApcContent = (props, context) => {
               />
             </>
           )
-        }>
+        }
+      >
         <LabeledList>
           <LabeledList.Item
             label="Cover Lock"

@@ -1,9 +1,9 @@
+import { Button, Dropdown, Input, NumberInput, Stack } from '../../components';
 import { BasicInput } from './BasicInput';
-import { NumberInput, Button, Stack, Input, Dropdown } from '../../components';
 import { OPTION_DROPDOWN_LARGE_CHAR_AMOUNT } from './constants';
 
 export const FUNDAMENTAL_DATA_TYPES = {
-  'string': (props, context) => {
+  string: (props) => {
     const { name, value, setValue, color } = props;
     return (
       <BasicInput name={name} setValue={setValue} value={value} defaultValue="">
@@ -16,24 +16,26 @@ export const FUNDAMENTAL_DATA_TYPES = {
       </BasicInput>
     );
   },
-  'number': (props, context) => {
+  number: (props) => {
     const { name, value, setValue, color } = props;
     return (
       <BasicInput
         name={name}
         setValue={setValue}
         value={value}
-        defaultValue={0}>
+        defaultValue={0}
+      >
         <NumberInput
+          step={1}
           value={value}
           color={color}
-          onChange={(e, val) => setValue(val)}
+          onChange={(val) => setValue(val)}
           unit={name}
         />
       </BasicInput>
     );
   },
-  'entity': (props, context) => {
+  entity: (props) => {
     const { name, setValue } = props;
     return (
       <Button
@@ -45,7 +47,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
       />
     );
   },
-  'datum': (props, context) => {
+  datum: (props) => {
     const { name, setValue } = props;
     return (
       <Button
@@ -57,7 +59,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
       />
     );
   },
-  'signal': (props, context) => {
+  signal: (props) => {
     const { name, setValue } = props;
     return (
       <Button
@@ -68,7 +70,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
       />
     );
   },
-  'option': (props, context) => {
+  option: (props) => {
     const { value, setValue } = props;
     let large = false;
     const extraData = props.extraData || [];
@@ -86,19 +88,20 @@ export const FUNDAMENTAL_DATA_TYPES = {
         color={'transparent'}
         options={data}
         onSelected={setValue}
-        displayText={value}
+        selected={value}
         menuWidth={large ? '200px' : undefined}
       />
     );
   },
-  'any': (props, context) => {
+  any: (props) => {
     const { name, value, setValue, color } = props;
     return (
       <BasicInput
         name={name}
         setValue={setValue}
         value={value}
-        defaultValue={''}>
+        defaultValue={''}
+      >
         <Stack>
           <Stack.Item>
             <Button
@@ -122,7 +125,7 @@ export const FUNDAMENTAL_DATA_TYPES = {
 };
 
 export const DATATYPE_DISPLAY_HANDLERS = {
-  'option': (port) => {
+  option: (port) => {
     return port.name.toLowerCase();
   },
 };

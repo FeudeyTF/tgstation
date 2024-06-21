@@ -1,10 +1,11 @@
 import { toFixed } from 'common/math';
+
 import { useBackend } from '../backend';
 import { Button, LabeledList, NumberInput, Section } from '../components';
 import { Window } from '../layouts';
 
-export const Electropack = (props, context) => {
-  const { act, data } = useBackend(context);
+export const Electropack = (props) => {
+  const { act, data } = useBackend();
   const { power, code, frequency, minFrequency, maxFrequency } = data;
   return (
     <Window width={260} height={137}>
@@ -31,7 +32,8 @@ export const Electropack = (props, context) => {
                     })
                   }
                 />
-              }>
+              }
+            >
               <NumberInput
                 animate
                 unit="kHz"
@@ -42,7 +44,7 @@ export const Electropack = (props, context) => {
                 value={frequency / 10}
                 format={(value) => toFixed(value, 1)}
                 width="80px"
-                onDrag={(e, value) =>
+                onDrag={(value) =>
                   act('freq', {
                     freq: value,
                   })
@@ -61,7 +63,8 @@ export const Electropack = (props, context) => {
                     })
                   }
                 />
-              }>
+              }
+            >
               <NumberInput
                 animate
                 step={1}
@@ -70,7 +73,7 @@ export const Electropack = (props, context) => {
                 maxValue={100}
                 value={code}
                 width="80px"
-                onDrag={(e, value) =>
+                onDrag={(value) =>
                   act('code', {
                     code: value,
                   })
