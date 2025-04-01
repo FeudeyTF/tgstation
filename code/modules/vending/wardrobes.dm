@@ -23,11 +23,13 @@ GLOBAL_VAR_INIT(roaches_deployed, FALSE)
 	GLOB.roaches_deployed = TRUE
 
 
-/obj/machinery/vending/wardrobe/on_dispense(obj/item/clothing/food)
+/obj/machinery/vending/wardrobe/on_dispense(obj/item/clothing/food, dispense_returned = FALSE)
 	if(!istype(food))
 		return
 	for(var/mob/living/basic/mothroach/roach in contents)
-		food.take_damage(food.get_integrity() * 0.5)
+		// Be slightly nicer on returned items
+		var/damage_mult = dispense_returned ? 0.1 : 0.5
+		food.take_damage(food.get_integrity() * damage_mult)
 
 /obj/machinery/vending/wardrobe/take_damage(damage_amount, damage_type = BRUTE, damage_flag = 0, sound_effect = 1, attack_dir)
 	. = ..()
@@ -309,7 +311,7 @@ GLOBAL_VAR_INIT(roaches_deployed, FALSE)
 
 /obj/machinery/vending/wardrobe/curator_wardrobe
 	name = "CuraDrobe"
-	desc = "A lowstock vendor only capable of vending clothing for curators and librarians."
+	desc = "A low-stock vendor only capable of vending clothing for curators and librarians."
 	icon_state = "curadrobe"
 	product_ads = "Glasses for your eyes and literature for your soul, Curadrobe has it all!; Impress & enthrall your library guests with Curadrobe's extended line of pens!"
 	vend_reply = "Thank you for using the CuraDrobe!"
@@ -636,7 +638,7 @@ GLOBAL_VAR_INIT(roaches_deployed, FALSE)
 
 /obj/machinery/vending/wardrobe/viro_wardrobe
 	name = "ViroDrobe"
-	desc = "An unsterilized machine for dispending virology related clothing."
+	desc = "An unsterilized machine for dispensing virology related clothing."
 	icon_state = "virodrobe"
 	product_ads = " Viruses getting you down? Then upgrade to sterilized clothing today!"
 	vend_reply = "Thank you for using the ViroDrobe"
