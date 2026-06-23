@@ -31,24 +31,8 @@
 	var/max_capacity = 128
 	///The amount of storage space we've got filled
 	var/used_capacity = 0
-	///List of stored files on this drive. Use `store_file` and `remove_file` instead of modifying directly!
-	var/list/datum/computer_file/stored_files = list()
 
-	///Non-static list of programs the computer should receive on Initialize.
-	var/list/datum/computer_file/starting_programs = list()
-	///Static list of default programs that come with ALL computers, here so computers don't have to repeat this.
-	var/static/list/datum/computer_file/default_programs = list(
-		/datum/computer_file/program/themeify,
-		/datum/computer_file/program/ntnetdownload,
-		/datum/computer_file/program/filemanager,
-	)
-
-	///The program currently active on the tablet.
-	var/datum/computer_file/program/active_program
-	///Idle programs on background. They still receive process calls but can't be interacted with.
-	var/list/datum/computer_file/program/idle_threads = list()
-	/// Amount of programs that can be ran at once
-	var/max_idle_programs = 2
+	var/datum/operating_system/os
 
 	///Flag of the type of device the modular computer is, deciding what types of apps it can run.
 	var/hardware_flag = PROGRAM_ALL
@@ -149,7 +133,10 @@
 	if(internal_cell)
 		internal_cell = new internal_cell(src)
 
-	install_default_programs()
+	if(!os)
+		os = new /datum/operating_system/default/ntos/mobile()
+	os.install()
+
 	register_context()
 	update_appearance()
 
@@ -172,12 +159,6 @@
 /obj/item/modular_computer/proc/on_circuit_removed(datum/source)
 	SIGNAL_HANDLER
 	UnregisterSignal(shell.attached_circuit, COMSIG_CIRCUIT_PRE_POWER_USAGE)
-
-/obj/item/modular_computer/proc/install_default_programs()
-	SHOULD_CALL_PARENT(FALSE)
-	for(var/programs in default_programs + starting_programs)
-		var/datum/computer_file/program_type = new programs
-		store_file(program_type)
 
 /obj/item/modular_computer/Destroy()
 	STOP_PROCESSING(SSobj, src)
@@ -574,7 +555,7 @@
 			else
 				to_chat(user, span_notice("You press the power button and start up \the [src]."))
 			if(open_ui)
-				update_tablet_open_uis(user)
+				ui_interact(user)
 		SEND_SIGNAL(src, COMSIG_MODULAR_COMPUTER_TURNED_ON, user)
 		return TRUE
 	else // Unpowered
@@ -644,57 +625,6 @@
 
 /obj/item/modular_computer/proc/send_sound()
 	playsound(src, 'sound/machines/terminal/terminal_success.ogg', 15, TRUE)
-
-// Function used by NanoUI's to obtain data for header. All relevant entries begin with "PC_"
-/obj/item/modular_computer/proc/get_header_data()
-	var/list/data = list()
-
-	data["PC_device_theme"] = device_theme
-
-	if(internal_cell)
-		data["PC_lowpower_mode"] = !internal_cell.charge
-		switch(internal_cell.percent())
-			if(80 to INFINITY)
-				data["PC_batteryicon"] = "batt_100.gif"
-			if(60 to 80)
-				data["PC_batteryicon"] = "batt_80.gif"
-			if(40 to 60)
-				data["PC_batteryicon"] = "batt_60.gif"
-			if(20 to 40)
-				data["PC_batteryicon"] = "batt_40.gif"
-			if(5 to 20)
-				data["PC_batteryicon"] = "batt_20.gif"
-			else
-				data["PC_batteryicon"] = "batt_5.gif"
-		data["PC_batterypercent"] = "[round(internal_cell.percent())]%"
-	else
-		data["PC_lowpower_mode"] = FALSE
-		data["PC_batteryicon"] = null
-		data["PC_batterypercent"] = null
-
-	switch(get_ntnet_status())
-		if(NTNET_NO_SIGNAL)
-			data["PC_ntneticon"] = "sig_none.gif"
-		if(NTNET_LOW_SIGNAL)
-			data["PC_ntneticon"] = "sig_low.gif"
-		if(NTNET_GOOD_SIGNAL)
-			data["PC_ntneticon"] = "sig_high.gif"
-		if(NTNET_ETHERNET_SIGNAL)
-			data["PC_ntneticon"] = "sig_lan.gif"
-
-	var/list/program_headers = list()
-	if(length(idle_threads))
-		for(var/datum/computer_file/program/idle_programs as anything in idle_threads)
-			if(!idle_programs.ui_header)
-				continue
-			program_headers.Add(list(list("icon" = idle_programs.ui_header)))
-
-	data["PC_programheaders"] = program_headers
-
-	data["PC_stationtime"] = station_time_timestamp()
-	data["PC_stationdate"] = "[time2text(world.realtime, "DDD, Month DD", NO_TIMEZONE)], [CURRENT_STATION_YEAR]"
-	data["PC_showexitprogram"] = !!active_program // Hides "Exit Program" button on mainscreen
-	return data
 
 /obj/item/modular_computer/proc/open_program(mob/user, datum/computer_file/program/program, open_ui = TRUE)
 	if(program.computer != src)
