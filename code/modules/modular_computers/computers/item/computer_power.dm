@@ -16,9 +16,9 @@
 	internal_cell.use(min(amount, internal_cell.charge)) //drain it anyways.
 	if(active_program?.program_flags & PROGRAM_RUNS_WITHOUT_POWER)
 		return TRUE
-	INVOKE_ASYNC(src, PROC_REF(close_all_programs))
+	INVOKE_ASYNC(os, TYPE_PROC_REF(/datum/operating_system/sosix, shutdown_os))
 	for(var/datum/computer_file/program/programs as anything in stored_files)
-		if((programs.program_flags & PROGRAM_RUNS_WITHOUT_POWER) && open_program(program = programs))
+		if((programs.program_flags & PROGRAM_RUNS_WITHOUT_POWER) && os.run_program(program = programs))
 			return TRUE
 	return FALSE
 
@@ -35,7 +35,7 @@
 		active_program.event_powerfailure()
 	if(light_on)
 		set_light_on(FALSE)
-	for(var/datum/computer_file/program/programs as anything in idle_threads)
+	for(var/datum/computer_file/program/programs as anything in os.idle_threads)
 		programs.event_powerfailure()
 	shutdown_computer(loud = FALSE)
 
@@ -47,10 +47,10 @@
 		power_usage *= FLASHLIGHT_DRAIN_MULTIPLIER
 	if(active_program)
 		power_usage += active_program.power_cell_use
-	for(var/datum/computer_file/program/open_programs as anything in idle_threads)
+	for(var/datum/computer_file/program/open_programs as anything in os.idle_threads)
 		if(!open_programs.power_cell_use)
 			continue
-		if(open_programs in idle_threads)
+		if(open_programs in os.idle_threads)
 			power_usage += (open_programs.power_cell_use / 2)
 
 	if(use_energy(power_usage * seconds_per_tick))

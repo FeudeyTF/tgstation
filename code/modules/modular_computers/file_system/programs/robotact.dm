@@ -19,7 +19,7 @@
 	. = ..()
 	if(.)
 		var/obj/item/modular_computer/pda/silicon/tablet = computer
-		if(tablet.device_theme == PDA_THEME_SYNDICATE)
+		if(istype(tablet.os, /datum/operating_system/sosix/ntos/syndie))
 			program_open_overlay = "command-syndicate"
 		return TRUE
 	return FALSE

@@ -115,7 +115,7 @@
 			"name" = program.filename,
 			"desc" = program.filedesc,
 			"header_program" = !!(program.program_flags & PROGRAM_HEADER),
-			"running" = !!(program in idle_threads),
+			"running" = !!(program in os.idle_threads),
 			"icon" = program.program_icon,
 			"alert" = program.alert_pending,
 		))
@@ -142,7 +142,7 @@
 		if("PC_exit")
 			//you can't close apps in emergency mode.
 			if(isnull(internal_cell) || internal_cell.charge)
-				active_program.kill_program(usr)
+				os.kill_program(active_program)
 			return TRUE
 		if("PC_shutdown")
 			shutdown_computer()
@@ -155,17 +155,17 @@
 
 		if("PC_killprogram")
 			var/prog = params["name"]
-			var/datum/computer_file/program/killed_program = find_file_by_name(prog)
+			var/datum/computer_file/program/killed_program = os.find_file_by_name(prog)
 
 			if(!istype(killed_program))
 				return
 
-			killed_program.kill_program(usr)
+			os.kill_program(killed_program)
 			to_chat(usr, span_notice("Program [killed_program.filename].[killed_program.filetype] with PID [rand(100,999)] has been killed."))
 			return TRUE
 
 		if("PC_runprogram")
-			open_program(usr, find_file_by_name(params["name"]))
+			os.run_program(usr, os.find_file_by_name(params["name"]))
 			return TRUE
 
 		if("PC_toggle_light")

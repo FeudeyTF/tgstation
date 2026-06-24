@@ -35,7 +35,7 @@
 		return FALSE
 	if(istype(file_removing, /datum/computer_file/program))
 		var/datum/computer_file/program/program_file = file_removing
-		program_file.kill_program()
+		os.kill_program(program_file)
 
 	stored_files.Remove(file_removing)
 	used_capacity -= file_removing.size

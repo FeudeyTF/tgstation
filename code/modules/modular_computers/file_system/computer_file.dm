@@ -13,6 +13,9 @@
 	var/static/file_uid = 0
 	///The modular computer hosting the file.
 	var/obj/item/modular_computer/computer
+
+	var/datum/operating_system/sosix/os
+
 	///The computer disk hosting the file.
 	var/obj/item/disk/computer/disk_host
 
@@ -89,7 +92,7 @@
 /datum/computer_file/program/proc/event_powerfailure()
 	if(program_flags & PROGRAM_RUNS_WITHOUT_POWER)
 		return
-	kill_program()
+	os.kill_program(src)
 
 /**
  * Called when a computer program is crashing due to any required connection being shut off.
@@ -97,7 +100,7 @@
  * * background - Whether the app is running in the background.
  */
 /datum/computer_file/program/proc/event_networkfailure(background)
-	kill_program()
+	os.kill_program(src)
 	if(background)
 		computer.visible_message(span_danger("\The [computer]'s screen displays a \"Process [filename].[filetype] (PID [rand(100,999)]) terminated - Network Error\" error"))
 	else
