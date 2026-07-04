@@ -50,10 +50,9 @@
 					current_token.next = token
 					token.parent = current_token
 					current_token = token
-				
+
 				break
 		if(!parsed)
-			world.log << "[pcode]"
 			error(/datum/ntcode/error/lexer/unknown_token)
 			break
 	return head.next

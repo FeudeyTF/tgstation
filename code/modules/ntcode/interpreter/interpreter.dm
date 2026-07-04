@@ -38,6 +38,6 @@
 
 	head_node.evaluate(src)
 
-/datum/ntcode/interpreter/proc/evaluate(args)
+/datum/ntcode/interpreter/proc/evaluate(arguments)
 
 

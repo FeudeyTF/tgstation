@@ -15,6 +15,6 @@
 
 /datum/ntcode/node/proc/parse(datum/ntcode/parser/parser)
 	return
-	
+
 /datum/ntcode/node/proc/to_string(indent)
 	return "[indent][type]"

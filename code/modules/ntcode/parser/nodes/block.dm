@@ -21,7 +21,7 @@
 
 	new_scope.parent = analyzer.current_scope
 	analyzer.current_scope = new_scope
-	
+
 	var/datum/ntcode/node/current = head
 
 	var/result = null
@@ -41,7 +41,7 @@
 
 	new_scope.parent = interpreter.current_scope
 	interpreter.current_scope = new_scope
-	
+
 	var/datum/ntcode/node/current = head
 
 	var/result = null
@@ -56,7 +56,7 @@
 	// TODO: Delete free scope from memory
 	interpreter.current_scope = interpreter.current_scope.parent
 	variables.Cut()
-	
+
 	return result
 
 /datum/ntcode/node/block/parse(datum/ntcode/parser/parser)
@@ -76,7 +76,7 @@
 
 			if(block_stack.any())
 				var/datum/ntcode/node/parent_head = block_stack.peek()
-				
+
 				var/datum/ntcode/node/block/completed = new type(head)
 
 				var/datum/ntcode/node/tail = parent_head
@@ -95,8 +95,8 @@
 				return
 			block_stack.push(null)
 			continue
-			
-		var/result = new /datum/ntcode/node/statement().parse(parser)
+
+		var/result = GLOB.ntcode_statement_node.parse(parser)
 		if(result)
 			var/datum/ntcode/node/current = block_stack.pop()
 			if(!current)
@@ -116,11 +116,11 @@
 /datum/ntcode/node/block/to_string(indent)
 	. = ..()
 	var/result = "\n[indent]{\n"
-	
+
 	var/datum/ntcode/node/current = head
 	while(current)
 		result += "[current.to_string("[indent]	")]\n"
 		current = current.next
-	
+
 	result += "[indent]}\n"
 	return result

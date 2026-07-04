@@ -16,7 +16,7 @@
 
 	for(var/i = 1; i <= arguments.len; i++)
 		block.set_variable(new /datum/ntcode/variable(arguments[i], null))
-	
+
 	analyzer.call_stack += name
 	block.analyze(analyzer)
 	analyzer.call_stack.Cut()
@@ -44,7 +44,7 @@
 		parser.skip(",")
 	parser.skip(")")
 
-	var/block = new /datum/ntcode/node/block().parse(parser)
+	var/block = GLOB.ntcode_block_node.parse(parser)
 	if(!block)
 		parser.error(new /datum/ntcode/error/parser/unexpected/construct/block(parser.current_token))
 		return null

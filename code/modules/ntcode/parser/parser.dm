@@ -13,7 +13,7 @@
 /datum/ntcode/parser/proc/parse(datum/ntcode/token/head)
 	current_token = head
 	current_statements_count = 0
-	return new /datum/ntcode/node/root().parse(src)
+	return GLOB.ntcode_root_node.parse(src)
 
 /datum/ntcode/parser/proc/match_value(expected)
 	if(!equals_value(expected))

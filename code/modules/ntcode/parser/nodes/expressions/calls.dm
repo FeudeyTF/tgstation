@@ -64,16 +64,21 @@
 			if(NTCODE_FUNCTION_DELIMETER)
 				var/datum/ntcode/token/current_function = metadata["functions"].peek()
 				if(current_function && metadata["args_count"][current_function])
-					metadata["args_count"][current_function]++
-				while(stack.any() && stack.peek().value != NTCODE_OPEN_PAREN)
+					metadata["args_count"][current_function] += 1
+				var/datum/ntcode/token/stack_token = stack.peek()
+				while(stack_token && stack_token.value != NTCODE_OPEN_PAREN)
 					output.enqueue(stack.pop())
+					stack_token = stack.peek()
 				metadata["expect"] = NTCODE_EXPRESSION_OPERAND
 			if(NTCODE_OPEN_PAREN)
 				stack.push(token)
 				metadata["expect"] = NTCODE_EXPRESSION_OPERAND
 			if(NTCODE_CLOSE_PAREN)
-				while (stack.peek().value != NTCODE_OPEN_PAREN)
+				var/datum/ntcode/token/stack_token = stack.peek()
+				while (stack_token.value != NTCODE_OPEN_PAREN)
 					output.enqueue(stack.pop())
+					stack_token = stack.peek()
+
 				stack.pop()
 				if (stack.any() && is_function(stack.peek()))
 					output.enqueue(stack.pop())
@@ -84,7 +89,8 @@
 		metadata["args_count"][token] = 1
 		if(token.next && token.next.next && is_close_paren(token.next.next))
 			metadata["args_count"][token] = 0
-		metadata["functions"].push(token)
+		var/datum/stack/functions = metadata["functions"]
+		functions.push(token)
 		metadata["expect"] = NTCODE_EXPRESSION_OPAREN
 
 /datum/ntcode/node/expression/function_call/to_string(indent)

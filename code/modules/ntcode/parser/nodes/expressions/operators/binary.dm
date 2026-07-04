@@ -10,7 +10,7 @@
 /datum/ntcode/node/expression/oper/binary/analyze(datum/ntcode/analyzer/analyzer)
 	left.analyze(analyzer)
 	right.analyze(analyzer)
-	
+
 /datum/ntcode/node/expression/oper/binary/build(datum/ntcode/token/token, datum/stack/tree, alist/metadata)
 	var/right = tree.pop()
 	var/left = tree.pop()
@@ -46,7 +46,7 @@
 /datum/ntcode/node/expression/oper/binary/subtract/evaluate_operator(left, right)
 	if(isnum(left) && isnum(right))
 		return left - right
-	
+
 /datum/ntcode/node/expression/oper/binary/multiply
 	symbol = "*"
 	precedence = NTCODE_PREC_MULTIPLY
@@ -136,7 +136,7 @@
 
 /datum/ntcode/node/expression/oper/binary/xor/evaluate_operator(left, right)
 	return left ^ right
-	
+
 /datum/ntcode/node/expression/oper/binary/left_shift
 	symbol = "<<"
 	precedence = NTCODE_PREC_SHIFT
@@ -156,7 +156,7 @@
 	precedence = NTCODE_PREC_ARRAY
 
 /datum/ntcode/node/expression/oper/binary/array/to_string(indent)
-	return "[indent][left.to_string("")]\[[right.to_string("")]]"	
+	return "[indent][left.to_string("")]\[[right.to_string("")]]"
 
 /datum/ntcode/node/expression/oper/binary/array/evaluate_operator(left, right)
 	return*/

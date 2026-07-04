@@ -15,8 +15,11 @@
 	return is_ntcode_operator(token) && token.value == symbol
 
 /datum/ntcode/node/expression/oper/shunt(datum/ntcode/token/token, datum/stack/stack, datum/queue/output, alist/metadata)
-	while (stack.any() && is_ntcode_operator(stack.peek().type) && compare_operators(token, stack.peek(), metadata))
+	var/datum/ntcode/token/stack_token = stack.peek()
+	while (stack_token && is_ntcode_operator(stack_token.type) && compare_operators(token, stack_token, metadata))
 		output.enqueue(stack.pop())
+		stack_token = stack.peek()
+
 	stack.push(token)
 	metadata["precs"][token] = alist("precedence" = precedence, "associativity" = associativity)
 	metadata["expect"] = NTCODE_EXPRESSION_OPERAND

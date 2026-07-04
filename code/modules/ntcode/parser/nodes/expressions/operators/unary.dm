@@ -20,7 +20,7 @@
 	if(istype(value, /datum/ntcode/exception/error))
 		return value
 
-/datum/ntcode/node/expression/oper/unary/proc/evaluate_operator(value)		
+/datum/ntcode/node/expression/oper/unary/proc/evaluate_operator(value)
 
 /datum/ntcode/node/expression/oper/unary/build(datum/ntcode/token/token, datum/stack/tree, alist/metadata)
 	return new type(tree.pop())
@@ -38,7 +38,7 @@
 
 /datum/ntcode/node/expression/oper/unary/minus
 	symbol = "-"
-	
+
 /datum/ntcode/node/expression/oper/unary/minus/matches(datum/ntcode/token/token)
 	return token.value == symbol  && (token.parent == null || token.parent == "," || token.parent == "(" || is_ntcode_operator(token.parent))
 

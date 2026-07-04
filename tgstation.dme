@@ -563,6 +563,7 @@
 #include "code\_globalvars\game_modes.dm"
 #include "code\_globalvars\genetics.dm"
 #include "code\_globalvars\layers.dm"
+#include "code\_globalvars\ntcode.dm"
 #include "code\_globalvars\lighting.dm"
 #include "code\_globalvars\logging.dm"
 #include "code\_globalvars\phobias.dm"

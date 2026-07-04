@@ -7,7 +7,7 @@
 		src.line_number = token.line_number
 		src.line_offset = token.line_offset
 	src.token = token
-	
+
 /datum/ntcode/error/parser/unexpected/token
 	var/expected
 
@@ -38,7 +38,7 @@
 
 /datum/ntcode/error/parser/unexpected/construct/to_string()
 	return "Expected [construct_name] got '[token.value]'"
-	
+
 /datum/ntcode/error/parser/unexpected/construct/expression
 	construct_name = "expression"
 

@@ -1,14 +1,15 @@
 /datum/ntcode/node/root
 	var/datum/ntcode/node/head
 
-	var/static/list/datum/ntcode/node/root_nodes = list(
-		/datum/ntcode/node/declaration/function,
-		/datum/ntcode/node/statement/simple/import
-	)
+	var/list/datum/ntcode/node/root_nodes = list()
 
 /datum/ntcode/node/root/New(datum/ntcode/node/head)
 	. = ..()
 	src.head = head
+	if(type != /datum/ntcode/node/root)
+		return
+	root_nodes += new /datum/ntcode/node/declaration/function()
+	root_nodes += new /datum/ntcode/node/statement/simple/import()
 
 /datum/ntcode/node/root/analyze(datum/ntcode/analyzer/analyzer)
 	var/datum/ntcode/node/current_node = head
@@ -46,11 +47,11 @@
 /datum/ntcode/node/root/parse(datum/ntcode/parser/parser)
 	var/datum/ntcode/node/head = new()
 	var/datum/ntcode/node/current_node = head
-	
+
 	while(parser.current_token)
 		var/node_parsed = FALSE
-		for(var/root_node in root_nodes)
-			var/result = new root_node().parse(parser)
+		for(var/datum/ntcode/node/root_node in root_nodes)
+			var/result = root_node.parse(parser)
 			if(!result)
 				continue
 
@@ -69,4 +70,3 @@
 		result += "[current_node.to_string(indent)]\n"
 		current_node = current_node.next
 	return result
-	

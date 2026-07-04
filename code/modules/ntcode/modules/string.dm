@@ -52,7 +52,7 @@
 /datum/ntcode/module/string/proc/lower(string)
 	if(!istext(string))
 		return
-	return lowertext(string)
+	return LOWER_TEXT(string)
 
 /datum/ntcode/module/string/proc/upper(string)
 	if(!istext(string))

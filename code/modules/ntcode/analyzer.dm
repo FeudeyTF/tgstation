@@ -1,6 +1,6 @@
 /datum/ntcode/analyzer
 	var/list/errors = list()
-	
+
 	var/datum/ntcode/scope/current_scope
 
 	var/list/datum/ntcode/module/modules
@@ -12,7 +12,6 @@
 /datum/ntcode/analyzer/New(datum/ntcode/module/modules)
 	. = ..()
 	src.modules = modules
-	
 
 /datum/ntcode/analyzer/proc/analyze(datum/ntcode/node/head)
 	errors = list()
@@ -21,7 +20,7 @@
 	current_scope = new()
 
 	head.analyze(src)
- 
+
 	return errors
 
 /datum/ntcode/analyzer/proc/error(error)

@@ -7,7 +7,7 @@
 		return
 	for(var/statement in subtypesof(/datum/ntcode/node/statement/))
 		statements += new statement
-		
+
 /datum/ntcode/node/statement/parse(datum/ntcode/parser/parser)
 	if(parser.current_statements_count >= parser.max_statements_count)
 		parser.error(new /datum/ntcode/error/parser/max_depth/statement(parser.current_token))

@@ -18,9 +18,9 @@
 
 	if(istype(variable, /datum/ntcode/variable/const))
 		analyzer.error(new /datum/ntcode/error/semantic/const_assign(src, variable_name))
-		
+
 	expression.analyze(analyzer)
-	
+
 /datum/ntcode/node/statement/simple/assign/evaluate(datum/ntcode/interpreter/interpreter)
 	var/datum/ntcode/variable/variable = interpreter.current_scope.get_variable(variable_name)
 	var/result = expression.evaluate(interpreter)
@@ -121,11 +121,11 @@
 /datum/ntcode/node/statement/simple/function_call/parse(datum/ntcode/parser/parser)
 	if(!parser.equals(/datum/ntcode/token/identifier))
 		return
-	
+
 	if(!parser.current_token.next || parser.current_token.next.value != "(")
 		return
 
-	var/function = new /datum/ntcode/node/expression().parse(parser)
+	var/function = GLOB.ntcode_expression_node.parse(parser)
 	if(!function)
 		parser.error(new /datum/ntcode/error/parser/unexpected/construct/expression(parser.current_token))
 		return
@@ -152,12 +152,12 @@
 		return value
 
 	return new /datum/ntcode/exception/ret(value)
-	
+
 /datum/ntcode/node/statement/simple/ret/parse(datum/ntcode/parser/parser)
 	if(!parser.match("return"))
 		return
 
-	var/expression = new /datum/ntcode/node/expression().parse(parser)
+	var/expression = GLOB.ntcode_expression_node.parse(parser)
 	if(!expression)
 		parser.error(new /datum/ntcode/error/parser/unexpected/construct/expression(parser.current_token))
 		return
@@ -165,13 +165,13 @@
 	return new type(expression)
 
 /datum/ntcode/node/statement/simple/ret/to_string(indent)
-	return "[indent]return [expression.to_string("")];"	
+	return "[indent]return [expression.to_string("")];"
 
 /datum/ntcode/node/statement/simple/loop_continue
 
 /datum/ntcode/node/statement/simple/loop_continue/evaluate(datum/ntcode/interpreter/interpreter)
 	return new /datum/ntcode/exception/loop_continue()
-	
+
 /datum/ntcode/node/statement/simple/loop_continue/parse(datum/ntcode/parser/parser)
 	if(!parser.match("continue"))
 		return
@@ -179,13 +179,13 @@
 	return new type()
 
 /datum/ntcode/node/statement/simple/loop_continue/to_string(indent)
-	return "[indent]continue;"  
+	return "[indent]continue;"
 
 /datum/ntcode/node/statement/simple/loop_break
 
 /datum/ntcode/node/statement/simple/loop_break/evaluate(datum/ntcode/interpreter/interpreter)
 	return new /datum/ntcode/exception/loop_break()
-	
+
 /datum/ntcode/node/statement/simple/loop_break/parse(datum/ntcode/parser/parser)
 	if(!parser.match("break"))
 		return
@@ -193,7 +193,7 @@
 	return new type()
 
 /datum/ntcode/node/statement/simple/loop_break/to_string(indent)
-	return "[indent]break;"  
+	return "[indent]break;"
 
 /datum/ntcode/node/statement/simple/variable_declaration
 	var/keyword = "var"
@@ -226,7 +226,7 @@
 	var/var_name = parser.consume(/datum/ntcode/token/identifier)
 	var/datum/ntcode/node/expression/init = null
 	if(parser.match("="))
-		init = new /datum/ntcode/node/expression().parse(parser)
+		init = GLOB.ntcode_expression_node.parse(parser)
 		if(!init)
 			parser.error(new /datum/ntcode/error/parser/unexpected/construct/expression(parser.current_token))
 			return
@@ -306,4 +306,4 @@
 
 /datum/ntcode/node/statement/simple/import/to_string(indent)
 	return "import [module_name];"
-	
+

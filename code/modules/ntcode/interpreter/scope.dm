@@ -33,10 +33,10 @@
 	var/datum/ntcode/scope/current_scope = analyzer.current_scope
 	while(analyzer.current_scope.parent)
 		analyzer.current_scope = analyzer.current_scope.parent
-		
+
 	for(var/i = 1; i <= arguments.len; i++)
 		block.set_variable(new /datum/ntcode/variable(arguments[i], null))
-	
+
 	block.analyze(analyzer)
 	analyzer.current_scope = current_scope
 
@@ -44,10 +44,10 @@
 	var/datum/ntcode/scope/current_scope = interpreter.current_scope
 	while(interpreter.current_scope.parent)
 		interpreter.current_scope = interpreter.current_scope.parent
-	
+
 	for(var/i = 1; i <= arguments.len; i++)
 		block.set_variable(new /datum/ntcode/variable(arguments[i], arg[i]))
-	
+
 	var/datum/ntcode/exception/exception = block.evaluate(interpreter)
 	interpreter.current_scope = current_scope
 
@@ -57,7 +57,7 @@
 	if(istype(exception, /datum/ntcode/exception/ret))
 		var/datum/ntcode/exception/ret/result = exception
 		return result.result
-	
+
 	if(istype(exception, /datum/ntcode/exception/error))
 		var/datum/ntcode/exception/error/error = exception
 		error.stack += src
@@ -98,7 +98,7 @@
 
 /datum/ntcode/scope/proc/set_variable(datum/ntcode/variable/variable)
 	variables[variable.name] = variable
- 
+
 /datum/ntcode/scope/proc/get_variable(name)
 	var/datum/ntcode/scope/scope = src
 	while(scope)

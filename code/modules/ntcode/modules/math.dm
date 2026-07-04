@@ -1,12 +1,12 @@
 /datum/ntcode/module/math
 	module_name = "math"
-	
+
 /datum/ntcode/module/math/New()
 	. = ..()
-	
+
 	add_constant("PI", 3.141592653)
 	add_constant("E",  2.718281828459045360)
-	
+
 	add_constant("false", FALSE)
 	add_constant("true",  TRUE)
 
